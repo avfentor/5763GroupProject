@@ -50,21 +50,16 @@ ui <- fluidPage(
                br(),
                br(),
                
-               leaflet() %>%
-                 addTiles() %>%
-                 add_weather(find_city("London, uk", units = 'metric') %>%
-                               owmr_as_tibble(),
-                             template = '<b>{{name}}</b>, {{temp}}°C',
-                             icon = owm_data$weather_icon),)
+               leafletOutput("map")
     )
   )
-)
+),
 
 
 
 # Server ------------------------------------------------------------------
 
-library(shiny)
+library(shiny),
 
 
 server <- function(input, output) {
@@ -292,6 +287,25 @@ server <- function(input, output) {
                     angle=0, vjust=1, hjust= 0))   
     
   })
+
+  
+  library(owmr)
+  library(leaflet)
+  
+  # store API key in an environment variable called OWM_API_KEY
+  Sys.setenv(OWM_API_KEY = 'e366d11329936ebfaaf4cf08af0ff523')
+  
+  
+  owm_data = find_city('London, uk', units = 'metric') %>%
+    owmr_as_tibble()
+  output$map <- renderLeaflet({
+    leaflet() %>%
+      addTiles() %>%
+      add_weather(owm_data,
+                  template = '<b>{{name}}</b>, {{temp}}°C',
+                  icon = owm_data$weather_icon)
+  })
+  
 }
 
 
