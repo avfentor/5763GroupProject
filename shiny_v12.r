@@ -46,23 +46,18 @@ ui <- fluidPage(
                  plotOutput("hist4"),
                  plotOutput("hist5")),
         tabPanel("Weather",
-                 leafletOutput("map", width = "600px", height = "600px"),
                  "Here, you can select a city to check the weather real time.
                    You are able to zoom in or zoom out. You can check the exact temperature
                    of a city by clicking on the weather icon.",
                  br(),
                  br(),
-
-
+                 leafletOutput("map", width = "600px", height = "600px"),
         ),
         selected = "Summary"
   )
            
   )
 )
-
-
-
 
 # Server ------------------------------------------------------------------
 
@@ -323,9 +318,6 @@ server <- function(input, output) {
     leafletProxy("map", data = owm_data)
   })
 }
-
-
-
 
 # Call shiny --------------------------------------------------------------
 
