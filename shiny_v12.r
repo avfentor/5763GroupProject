@@ -1,6 +1,9 @@
 
 library(shiny)
 library(leaflet)
+library(htmlwidgets)
+library(owmr)
+library(whisker)
 
 # UI ----------------------------------------------------------------------
 
@@ -43,13 +46,13 @@ ui <- fluidPage(
                  plotOutput("hist4"),
                  plotOutput("hist5")),
         tabPanel("Weather",
-                 leafletOutput("map"),
+                 leafletOutput("map", width = "600px", height = "600px"),
                  "Here, you can select a city to check the weather real time.
                    You are able to zoom in or zoom out. You can check the exact temperature
                    of a city by clicking on the weather icon.",
                  br(),
                  br(),
-                 
+
 
         ),
         selected = "Summary"
@@ -293,10 +296,18 @@ server <- function(input, output) {
   })
   
   # store API key in an environment variable called OWM_API_KEY
+  owmr_settings("e366d11329936ebfaaf4cf08af0ff523")
   Sys.setenv(OWM_API_KEY = 'e366d11329936ebfaaf4cf08af0ff523')
   
   owm_data = find_city('London, uk', units = 'metric') %>%
     owmr_as_tibble()
+  
+  find_city <- function(city = NA, ...) {
+    get <- owmr_wrap_get("find")
+    get(city, ...) %>%
+      owmr_parse() %>%
+      owmr_class("owmr_find")
+  }
   
   output$map <- renderLeaflet({
     # Use leaflet() here, and only include aspects of the map that
