@@ -1,7 +1,7 @@
 
 library(shiny)
-library(owmr)
 library(leaflet)
+library(RColorBrewer)
 
 # UI ----------------------------------------------------------------------
 
@@ -49,8 +49,6 @@ ui <- fluidPage(
                of a city by clicking on the weather icon.",
                br(),
                br(),
-               
-               leafletOutput("map")
     )
   )
 ),
@@ -286,24 +284,6 @@ server <- function(input, output) {
                     label= round(quantile(coefficients2()[,5], probs = 0.975), 2), 
                     angle=0, vjust=1, hjust= 0))   
     
-  })
-
-  
-  library(owmr)
-  library(leaflet)
-  
-  # store API key in an environment variable called OWM_API_KEY
-  Sys.setenv(OWM_API_KEY = 'e366d11329936ebfaaf4cf08af0ff523')
-  
-  
-  owm_data = find_city('London, uk', units = 'metric') %>%
-    owmr_as_tibble()
-  output$map <- renderLeaflet({
-    leaflet() %>%
-      addTiles() %>%
-      add_weather(owm_data,
-                  template = '<b>{{name}}</b>, {{temp}}°C',
-                  icon = owm_data$weather_icon)
   })
   
 }
