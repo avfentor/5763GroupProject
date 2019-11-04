@@ -5,9 +5,9 @@ account: avfentor
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 1390419
-bundleId: 2562659
+bundleId: 2562747
 url: https://avfentor.shinyapps.io/Project2/
-when: 1572870114.89882
+when: 1572872658.56114
 asMultiple: FALSE
 asStatic: FALSE
 ignoredFiles: Matthias_shiny_v12.r|Project2.R|R bootstrapping.R|r-packages.png|rboot.R|README.md|code/baseline.R|code/lmBoot.r|code/regBoot.sas|code/SpeededUp1.R|data/fitness.csv|speed trials/.DS_Store|speed trials/Experimentation.html|speed trials/Experimentation.Rmd|speed trials/Trial-1.html|speed trials/Trial-1.Rmd|Sas

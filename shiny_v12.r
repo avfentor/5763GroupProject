@@ -4,6 +4,8 @@ library(leaflet)
 library(htmlwidgets)
 library(owmr)
 library(whisker)
+library(shinyjs)
+library(V8)
 
 # UI ----------------------------------------------------------------------
 
@@ -50,6 +52,9 @@ ui <- fluidPage(
                    You are able to zoom in or zoom out. You can check the exact temperature
                    of a city by clicking on the weather icon.",
                  br(),
+                 shinyjs::useShinyjs(),
+                 shinyjs::extendShinyjs(text = "shinyjs.refresh = function() { location.reload(); }"),
+                 actionButton("refresh", "Refresh"),
                  br(),
                  leafletOutput("map", width = "600px", height = "600px"),
         ),
@@ -64,7 +69,7 @@ ui <- fluidPage(
 library(shiny)
 
 
-server <- function(input, output) {
+server <- function(input, output, session) {
   speedyBoot <- function(inputData, num_var,formula, nBoots){
     mat <- matrix(0L, nrow = nBoots, ncol = num_var)
     for(i in 1:nBoots){
@@ -316,6 +321,10 @@ server <- function(input, output) {
   observe({
     req(input$tab_being_displayed == "Weather") # Only display if tab is 'Map Tab' 
     leafletProxy("map", data = owm_data)
+  })
+  
+  observeEvent(input$refresh, {
+    shinyjs::js$refresh()
   })
 }
 
